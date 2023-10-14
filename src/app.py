@@ -1,5 +1,6 @@
 import pandas as pd
-from dash import Dash, html, dash_table
+from dash import Dash, html, dash_table, dcc
+import plotly.express as px
 
 df = pd.read_csv(
     'https://raw.githubusercontent.com/plotly/datasets/master/gapminder_unfiltered.csv')
@@ -12,7 +13,17 @@ app.layout = html.Div([
     html.H1('Exibicao do dataframe'),
     dash_table.DataTable(
         data=df.to_dict('records'),
-        page_size=10,
+        page_size=5,
+    ),
+    # exibe o grafico em forma de histograma
+    html.H1('Histograma'),
+    dcc.Graph(
+        figure=px.histogram(
+            df,
+            x='continent',
+            y='lifeExp',
+            histfunc='avg',
+        )
     )
 ])
 
